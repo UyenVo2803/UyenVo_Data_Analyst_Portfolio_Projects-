@@ -3,7 +3,7 @@
 ##  Skills used: Joins, CTE's, Temp Tables, Windows Functions, Aggregate Functions, Creating Views, Converting Data Types
 
 ### Data used:
-  Hyposthesized data in 2 csv files 
+  Database.rar (2 files csv)
  
 
 ## Tasks:
