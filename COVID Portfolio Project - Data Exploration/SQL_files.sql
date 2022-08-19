@@ -1,3 +1,9 @@
+/*
+Covid 19 Data Exploration 
+Skills used: Joins, CTE's, Temp Tables, Windows Functions, Aggregate Functions, Creating Views, Converting Data Types
+*/
+
+
 SELECT *
 FROM publicquerydataset.portfolio.Covid_deaths
 WHERE continent IS NOT NULL
@@ -70,8 +76,7 @@ ORDER BY TotalDeathCount DESC
 
 -- LET'S BREAK THINGS DOWN BY CONTINENT
 
-
--- Shoing continent with the highest death count per population
+-- Showing continent with the highest death count per population
 
 SELECT continent,
         MAX(CAST(total_deaths AS integer)) AS TotalDeathCount
@@ -80,7 +85,6 @@ FROM publicquerydataset.portfolio.Covid_deaths
 WHERE continent IS NOT NULL
 GROUP BY continent
 ORDER BY TotalDeathCount DESC
-
 
 -- GLOBAL NUMBERS
 
@@ -94,7 +98,20 @@ WHERE continent IS NOT NULL
 ORDER BY 1,2
 
 -- Looking at Total Population vs Vaccinations
+-- Shows Percentage of Population that has recieved at least one Covid Vaccine
+
+Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
+, SUM(CONVERT(int,vac.new_vaccinations)) OVER (PARTITION by dea.Location Order by dea.location, dea.Date) as RollingPeopleVaccinated
+--, (RollingPeopleVaccinated/population)*100
+From PortfolioProject..CovidDeaths dea
+Join PortfolioProject..CovidVaccinations vac
+	On dea.location = vac.location
+	and dea.date = vac.date
+where dea.continent is not null 
+order by 2,3
+
 -- USE CTE
+
 WITH PopvsVac (continent,location, date, population, new_vaccinations, RollingPeopleVaccinated)
 AS
 (
@@ -164,6 +181,6 @@ WHERE dea.continent IS NOT NULL
 --ORDER BY 2,3
 
 
-
 SELECT *
 FROM PercentPopulationVaccinated
+
